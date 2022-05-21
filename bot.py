@@ -1,8 +1,9 @@
+from tkinter import Button
 import telepot
 from telepot.loop import MessageLoop
 from searchMusic import searchMusic as search
 from parseMusicList import parseMusicList as parse
-
+from keyboard import generateInlineKeyboardMarkup as generate
 bot = telepot.Bot('5187758392:AAGb0ZAzUHdyjKCfxky4GxMwKT0ud5o3EqQ')
 
 
@@ -21,8 +22,8 @@ def handle(msg):
             bot.sendChatAction(chat_id, 'typing')
             searching = bot.sendMessage(chat_id, 'Searching music for ' + msg['text'])
             
-            result = parse(search(msg['text']), 0, 10)
+            result, button = parse(search(msg['text']), 0, 10)
             
-            bot.editMessageText(telepot.message_identifier(searching), result, parse_mode='Markdown')
+            bot.editMessageText(telepot.message_identifier(searching), result, parse_mode='Markdown', reply_markup=generate(button))
             
 MessageLoop(bot, handle).run_forever()

@@ -4,6 +4,7 @@
 @param: {int} start
 @param: {int} end
 @return: {string}
+@return: {object}
 '''
 
 
@@ -15,6 +16,8 @@ def parseMusicList(musicInfo, start, end):
     txt = 'I found the following music for you:\n\n'
     txt += '✅ \n'
     
+    button = []
+    
     for i in range(start, end):
         
         # if i is equal to the index, then change the caractor to '└'
@@ -25,9 +28,13 @@ def parseMusicList(musicInfo, start, end):
         
         txt += '├ *{}* *{}*\n'.format(i + 1, musicInfo['result']['songs'][i]['name'])
         txt += '│ └ {}\n'.format(musicInfo['result']['songs'][i]['artists'][0]['name'])
-            
+        
+        button.append({
+            'text': '{}'.format(i + 1),
+            'callback_data': '{}'.format(musicInfo['result']['songs'][i]['id'])
+        })
     print(txt)
-    return txt
+    return txt, button
 
 
 # for debug only!
