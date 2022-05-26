@@ -10,7 +10,8 @@ bot = telepot.Bot('5187758392:AAGb0ZAzUHdyjKCfxky4GxMwKT0ud5o3EqQ')
 
 def handle(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
-
+    
+    
     if chat_type == 'private':
         if msg['text'] == '/start':
             bot.sendChatAction(chat_id, 'typing')
