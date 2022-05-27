@@ -13,8 +13,7 @@ from sqlalchemy import null
 
 def parseMusicList(musicInfo, start, end):
     # print the first element of the list
-    txt = 'I found the following music for you:\n\n'
-    txt += '✅ \n'
+    txt = 'I found the following music for you:\n'
     
     button = []
     
@@ -24,6 +23,14 @@ def parseMusicList(musicInfo, start, end):
         if i == end - 1:
             txt += '└ *{}* *{}*\n'.format(i + 1, musicInfo['result']['songs'][i]['name'])
             txt += '     └ {}\n'.format(musicInfo['result']['songs'][i]['artists'][0]['name'])
+            
+            button.append({
+                'text': '{}'.format(i + 1),
+                'callback_data': 'song:{} {} {}'.format(musicInfo['result']['songs'][i]['id'], 
+                                                        musicInfo['result']['songs'][i]['name'],
+                                                        musicInfo['result']['songs'][i]['artists'][0]['name'])
+            })
+            
             break
         
         txt += '├ *{}* *{}*\n'.format(i + 1, musicInfo['result']['songs'][i]['name'])
@@ -31,9 +38,10 @@ def parseMusicList(musicInfo, start, end):
         
         button.append({
             'text': '{}'.format(i + 1),
-            'callback_data': '{}'.format(musicInfo['result']['songs'][i]['id'])
+            'callback_data': 'song:{} {} {}'.format(musicInfo['result']['songs'][i]['id'], 
+                                                        musicInfo['result']['songs'][i]['name'],
+                                                        musicInfo['result']['songs'][i]['artists'][0]['name'])
         })
-    print(txt)
     return txt, button
 
 
@@ -1596,5 +1604,5 @@ if __name__ == '__main__':
                 "songCount": 173
             },
             "code": 200
-        }, 20, 30
+        }, 0, 30
     )
