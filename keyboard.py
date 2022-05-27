@@ -20,6 +20,7 @@ def generateInlineKeyboardMarkup(array):
             if count >= len(array):
                 break
         inlineKeyboardMarkup['inline_keyboard'].append(keyboardRow)
+    print(inlineKeyboardMarkup)
     return inlineKeyboardMarkup
 
 '''

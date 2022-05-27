@@ -26,9 +26,7 @@ def parseMusicList(musicInfo, start, end):
             
             button.append({
                 'text': '{}'.format(i + 1),
-                'callback_data': 'song:{} {} {}'.format(musicInfo['result']['songs'][i]['id'], 
-                                                        musicInfo['result']['songs'][i]['name'],
-                                                        musicInfo['result']['songs'][i]['artists'][0]['name'])
+                'callback_data': 'song:{}'.format(musicInfo['result']['songs'][i]['id'])
             })
             
             break
@@ -38,14 +36,15 @@ def parseMusicList(musicInfo, start, end):
         
         button.append({
             'text': '{}'.format(i + 1),
-            'callback_data': 'song:{} {} {}'.format(musicInfo['result']['songs'][i]['id'], 
-                                                        musicInfo['result']['songs'][i]['name'],
-                                                        musicInfo['result']['songs'][i]['artists'][0]['name'])
+            'callback_data': 'song:{}'.format(musicInfo['result']['songs'][i]['id'])
         })
+    print(button)
+    print(txt)
     return txt, button
 
 
 # for debug only!
+'''
 if __name__ == '__main__':
 
     parseMusicList(
@@ -1606,3 +1605,4 @@ if __name__ == '__main__':
             "code": 200
         }, 0, 30
     )
+'''
