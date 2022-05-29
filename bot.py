@@ -35,22 +35,7 @@ def handleText(msg):
                 bot.editMessageText(telepot.message_identifier(searching), 'No result found!')
     elif chat_type == 'group' or chat_type == 'supergroup':
         # exit the group since there is some bloody bug in telepot
-        # bot.leaveChat(chat_id)
-        # make sure the message is replied to message that is sent by the bot
-        if msg['text'] == '/start':
-            bot.sendChatAction(chat_id, 'typing')
-            bot.sendMessage(chat_id, 'Hi! I am a bot can send you music from Netease Cloud Music. ' +
-                                      'Simply send me a music name and I will send you the music.')
-        # check is the ,essage reply to id (5480116977)
-        elif msg['reply_to_message']['from']['id'] == 5480116977:
-            bot.sendChatAction(chat_id, 'typing')
-            searching = bot.sendMessage(chat_id, 'Searching music for ' + msg['text'])
-            res = search(msg['text'])
-            if res != False:
-                result, button = parse(res, 0, 10)
-                bot.editMessageText(telepot.message_identifier(searching), result, parse_mode='Markdown', reply_markup=generate(button))
-            else:
-                bot.editMessageText(telepot.message_identifier(searching), 'No result found!')
+        bot.leaveChat(chat_id)
         
 def handleCallback(msg):
     query_id, from_id, query_data = telepot.glance(msg, flavor='callback_query')
