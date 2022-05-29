@@ -27,11 +27,12 @@ def handleText(msg):
             # the rest of message will be searching for the music handle by searchMusic.py
             bot.sendChatAction(chat_id, 'typing')
             searching = bot.sendMessage(chat_id, 'Searching music for ' + msg['text'])
-            
-            result, button = parse(search(msg['text']), 0, 10)
-            
-            bot.editMessageText(telepot.message_identifier(searching), result, parse_mode='Markdown', reply_markup=generate(button))
-            
+            res = search(msg['text'])
+            if res != False:
+                result, button = parse(res, 0, 10)
+                bot.editMessageText(telepot.message_identifier(searching), result, parse_mode='Markdown', reply_markup=generate(button))
+            else:
+                bot.editMessageText(telepot.message_identifier(searching), 'No result found!')
     elif chat_type == 'group' or chat_type == 'supergroup':
         # exit the group since there is some bloody bug in telepot
         bot.leaveChat(chat_id)
@@ -55,9 +56,14 @@ def handleCallback(msg):
                     file_id = line.split(' ')[1].replace('\n', '')
                     break
             log.close()
+            found = bot.editMessageText(telepot.message_identifier(process), 'The music found in server...')
+            sleep(1)
+            sending = bot.editMessageText(telepot.message_identifier(found), 'Sending...')
+            # change text 
+            
             bot.sendChatAction(from_id, 'upload_document')
             bot.sendDocument(from_id, file_id)
-            bot.editMessageText(telepot.message_identifier(process), 'Uploaded successfully✅')
+            bot.editMessageText(telepot.message_identifier(sending), 'Uploaded successfully✅')
         else:
             # get the music urls
             url = download(query_data)
@@ -74,7 +80,9 @@ def handleCallback(msg):
                         
                                           
             music = eyed3.load(musicData.split(',')[1])
+            music.tag.title = musicData.split(',')[1]
             music.tag.artist = musicData.split(',')[0]
+            music.tag.album = musicData.split(',')[2]
             music.tag.save()
             
             downloaded = bot.editMessageText(telepot.message_identifier(downloading), '''Download completed...''')
@@ -101,4 +109,4 @@ def handleCallback(msg):
 MessageLoop(bot, {
     'chat': handleText,
     'callback_query': handleCallback
-}).run_forever()0
+}).run_forever()

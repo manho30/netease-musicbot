@@ -11,9 +11,13 @@ import requests
 def searchMusic(name):
     url = 'https://netease.herokuapp.com/search?keywords={}'.format(name)
     res = requests.get(url)
-    # for debug only!
-    # print (res.json())
-    return res.json()
+    
+    res = res.json()
+    # is there any music inside the search result?
+    if len(res['result']['songs']) > 0:
+       return res
+    else:
+        return False
     
     
 # for debug only!
