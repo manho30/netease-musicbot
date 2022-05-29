@@ -6,12 +6,13 @@ from keyboard import generateInlineKeyboardMarkup as generate
 from downloadMusic import downloadMusic as download
 from getMusicData import getMusicData as getData
 from time import sleep
+from config import *
 import requests
 import eyed3
 import os
 
 
-bot = telepot.Bot('5480116977:AAGE0NAiG_kBG5M6Ljn1LrXAifvu5kkS-9s')
+bot = telepot.Bot(TOKEN)
 
 def handleText(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
