@@ -1,4 +1,4 @@
-﻿eyed3==0.9.7
+eyed3==0.9.7
 requests==2.28.2
-SQLAlchemy==1.4.41
+SQLAlchemy==2.0.10
 telepot==12.7
