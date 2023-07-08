@@ -11,11 +11,12 @@ from telepot.exception import TelegramError
 from telepot.loop import MessageLoop
 from tqdm import tqdm
 
-from config import TOKEN, MAX_DOWNLOAD
+from config import TOKEN, MAX_DOWNLOAD, ADMIN_ID
 import download
 import keyboard
 import music
 import parse
+import remove
 
 bot = telepot.Bot(TOKEN)
 
@@ -31,6 +32,10 @@ def handle_text(msg):
         if msg['text'] == '/start':
             bot.sendMessage(chat_id, 'Hi! I am a bot that can send you musics from Netease Cloud Music. ' +
                             'Simply send me a musics name and I will send you the musics.')
+        if msg['text'] == '/rm' and chat_id == ADMIN_ID:
+            bot.sendMessage(chat_id, 'Removing musics...')
+            music_count, thumbnail_count = remove.remove()
+            bot.sendMessage(chat_id, f'Removed {str(music_count)} music and {str(thumbnail_count)} thumbnails.')
         else:
             handle_private_message(msg)
     elif chat_type in ('group', 'supergroup'):
@@ -184,8 +189,18 @@ def bot_thread():
     while True:
         time.sleep(0.1)
 
+def remove_thread():
+    """ this thread removes the old files which run every 60 minutes """
+    remove.remove()
+    bot.sendMessage(ADMIN_ID, 'Removed old files')
+    while True:
+        time.sleep(3600)
+        remove.remove()
+        bot.sendMessage(ADMIN_ID, 'Removed old files')
+
 
 
 # Start the threads
 threading.Thread(target=bot_thread).start()
+threading.Thread(target=remove_thread).start()
 threading.Thread(target=process_queue).start()
